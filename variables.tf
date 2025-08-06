@@ -23,3 +23,22 @@ variable "subnets" {
     region = string
   }))
 }
+
+// Variables for GCS
+
+variable "bucket_name" {
+  description = "Name of the bucket"
+  type        = string
+}
+
+variable "bucket_location" {
+  description = "Location of the bucket"
+  type        = string
+}
+
+
+variable "enable_versioning" {
+  description = "Enable versioning for the GCS bucket"
+  type        = bool
+  default     = true
+}

@@ -28,3 +28,13 @@ EOT
 
   depends_on = [module.vpc]
 }
+
+module "gcs_backend" {
+  source            = "./modules/gcs_backend"
+  bucket_name       = var.bucket_name
+  bucket_location   = var.bucket_location
+  project_id        = var.project_id
+  enable_versioning = var.enable_versioning
+   depends_on = [module.documentation]
+}
+

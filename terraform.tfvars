@@ -15,3 +15,9 @@ subnets = [
     region = "asia-south1"
   }
 ]
+
+// GCS variables
+bucket_name = "bucket-one-0608251030"
+bucket_location = "europe-west2"
+enable_versioning = true
+
