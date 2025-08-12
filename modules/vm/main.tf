@@ -1,5 +1,6 @@
 resource "google_compute_instance" "vm" {
-  name         = var.instance_name
+  count = 2 # Set the count or number of vms to be created
+  name         = "${var.instance_name}-${count.index}" # Sets the vm instance name according to the count (index starting from 0)
   machine_type = var.machine_type
   zone         = var.zone
 
