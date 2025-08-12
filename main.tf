@@ -1,13 +1,13 @@
 provider "google" {
   credentials = file("terraform-sa-key.json")
-  project = var.project_id
-  region  = var.region
+  project     = var.project_id
+  region      = var.region
 }
 
 module "vpc" {
   source   = "./modules/vpc"
   vpc_name = var.vpc_name
-  subnets = var.subnets
+  subnets  = var.subnets
 }
 
 module "documentation" {
@@ -19,9 +19,9 @@ This Terraform configuration sets up a custom VPC with multiple subnets across r
 - Region: ${var.region}
 - VPC Name: ${var.vpc_name}
 - Subnets:
-%{ for subnet in var.subnets ~}
+%{for subnet in var.subnets~}
   - ${subnet.name} (${subnet.cidr}) in ${subnet.region}
-%{ endfor ~}
+%{endfor~}
 
 The VPC is provisioned using the 'vpc' module. This documentation is generated after the VPC is successfully created.
 EOT
@@ -35,6 +35,21 @@ module "gcs_backend" {
   bucket_location   = var.bucket_location
   project_id        = var.project_id
   enable_versioning = var.enable_versioning
-   depends_on = [module.documentation]
+  depends_on        = [module.documentation]
 }
 
+module "vm_instance" {
+  source        = "./modules/vm"
+  vm_instances = var.vm_instances
+  # instance_name = each.key
+  # machine_type  = each.value.machine_type
+  # zone          = each.value.zone
+  source_image  = var.source_image
+  disk_size     = var.disk_size
+  disk_type     = var.disk_type
+  network       = var.network
+  subnetwork    = var.subnetwork
+  tags          = var.tags
+
+  depends_on = [module.gcs_backend]
+}
