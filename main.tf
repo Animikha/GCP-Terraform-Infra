@@ -52,4 +52,11 @@ module "vm_instance" {
   tags          = var.tags
 
   depends_on = [module.gcs_backend]
+
 }
+
+# Can be used for tracking (importing) vms created manually
+# module "imported_vms" {
+#   source     = "./modules/imported_vms"
+#   depends_on = [ module.vm_instance ]
+# }
