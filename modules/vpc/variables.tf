@@ -11,3 +11,11 @@ variable "subnets" {
     region = string
   }))
 }
+
+variable "secondary_ip_range"{
+  description = "Secondary ip range for gke"
+  type = list(object({
+    range_name   = string
+    ip_cidr_range   = string
+  }))
+}
