@@ -8,6 +8,16 @@ module "vpc" {
   source   = "./modules/vpc"
   vpc_name = var.vpc_name
   subnets  = var.subnets
+  secondary_ip_range = var.secondary_ip_range
+}
+
+module "gke"{
+  source = "./modules/gke"
+  vpc_name = var.vpc_name
+  subnet_name = var.subnets[1].name
+  gke-pods = var.secondary_ip_range[0].range_name
+  gke-services = var.secondary_ip_range[1].range_name
+  subnet-two_range = var.subnets[1].cidr
 }
 
 module "documentation" {

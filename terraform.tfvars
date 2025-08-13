@@ -1,6 +1,6 @@
 project_id = "thinking-seer-464009-e2"
 region     = "europe-west2"
-
+ 
 // VPC variables
 vpc_name = "vpc-one"
 subnets = [
@@ -15,12 +15,12 @@ subnets = [
     region = "asia-south1"
   }
 ]
-
+ 
 // GCS variables
 bucket_name       = "bucket-one-0608251030"
 bucket_location   = "europe-west2"
 enable_versioning = true
-
+ 
 // VM variables
 instance_name = "vm-one"
 machine_type  = "e2-medium"
@@ -33,7 +33,7 @@ subnetwork    = "subnet-one"
 # ssh_user       = "abhinav"
 # ssh_public_key = "~/.ssh/id_rsa.pub"
 tags = ["secure-web", "ssh-access", "web"]
-
+ 
 vm_instances = {
   "vm-one" = {
     zone         = "europe-west2-a"
@@ -44,6 +44,16 @@ vm_instances = {
     machine_type = "e2-micro"
   }
 }
-
-
-
+ 
+// GKE variables
+ 
+secondary_ip_range = [
+  {
+    range_name    = "gke-pods"
+    ip_cidr_range = "10.0.4.0/22"
+  },
+  {
+    range_name    = "gke-services"
+    ip_cidr_range = "10.0.8.0/24"
+  }
+]
