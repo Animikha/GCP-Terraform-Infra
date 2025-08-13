@@ -114,3 +114,13 @@ variable "tags" {
   type        = list(string)
   default     = []
 }
+
+
+// Variables for GKE
+variable "secondary_ip_range" {
+  description = "Secondary ip range for gke"
+  type = list(object({
+    range_name   = string
+    ip_cidr_range   = string
+  }))
+}
