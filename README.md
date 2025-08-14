@@ -68,7 +68,7 @@ Key Characteristics:
 
 
 ### MySQL Database
-
+---
 ### Documentation
 #### Overview
 This module generates a local documentation file summarizing the Terraform infrastructure that has been provisioned. It is designed to run **after all other modules** have completed successfully, ensuring that the documentation reflects the final state of the infrastructure.
