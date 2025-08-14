@@ -32,9 +32,32 @@ This Terraform module provisions a **custom Virtual Private Cloud (VPC)** in Goo
 #### Security Considerations
 - Tag-based firewall rules ensure that only intended instances receive external traffic.
 - Ingress rules are tightly scoped to minimize exposure.
-
+---
 ### VM
+#### Overview
+This module provisions one or more **Google Compute Engine VM instances** using a dynamic configuration approach via the `for_each` construct. Each VM is uniquely defined by its name, machine type, zone, and other customizable parameters.
 
+#### Key Features
+1. **Dynamic Instance Creation**
+   - Uses `for_each` to create multiple VM instances based on the `var.vm_instances` map.
+   - Each instance is uniquely named using the map key.
+
+2. **Machine Configuration**
+   - Machine type and zone are configurable per instance.
+   - Boot disk parameters include:
+     - Source image (`var.source_image`)
+     - Disk size (`var.disk_size`)
+     - Disk type (`var.disk_type`)
+
+3. **Networking**
+   - Each VM is attached to a specified VPC and subnetwork.
+   - External IP is enabled via `access_config {}`.
+   - Network tags (`var.tags`) are used for firewall rule targeting.
+
+4. **Startup Script**
+   - VMs execute a startup script (`install-nginx.sh`) located in the module’s `scripts` directory.
+   - This allows automated provisioning of services like NGINX on boot.
+---
 ### GCS
 
 ### Google Kubernetes Engine (GKE) Cluster
