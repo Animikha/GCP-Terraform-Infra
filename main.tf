@@ -18,6 +18,7 @@ module "gke"{
   gke-pods = var.secondary_ip_range[0].range_name
   gke-services = var.secondary_ip_range[1].range_name
   subnet-two_range = var.subnets[1].cidr
+  depends_on = [ module.vpc ]
 }
 
 module "documentation" {
