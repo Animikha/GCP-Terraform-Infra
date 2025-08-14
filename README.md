@@ -59,7 +59,23 @@ This module provisions one or more **Google Compute Engine VM instances** using 
    - This allows automated provisioning of services like NGINX on boot.
 ---
 ### GCS
+#### Overview
+This module provisions a **Google Cloud Storage (GCS) bucket** to serve as a backend or general-purpose storage resource for the infrastructure. It includes lifecycle management and versioning features for better data governance and cost control.
 
+#### Key Features
+1. **Bucket Configuration**
+   - Bucket name, location, and project are configurable via variables.
+   - Uniform bucket-level access is enabled for simplified IAM management.
+   - `force_destroy = true` allows the bucket to be deleted even if it contains objects.
+
+2. **Versioning**
+   - Object versioning is optionally enabled via `var.enable_versioning`.
+   - Helps retain historical versions of objects for recovery and auditing.
+
+3. **Lifecycle Rules**
+   - Automatically deletes objects older than 30 days to manage storage costs.
+   - Configurable via the `lifecycle_rule` block.
+---
 ### Google Kubernetes Engine (GKE) Cluster
 #### Overview
 This Terraform configuration provisions a private Google Kubernetes Engine (GKE) cluster in the asia-south1 region, designed with strong security and controlled network access.
