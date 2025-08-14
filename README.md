@@ -1,6 +1,37 @@
 ## Description
-
+This Terraform project provisions a comprehensive Google Cloud Platform (GCP) infrastructure. It includes modules for:
+- VPC
+- VM Instances
+- Google Cloud Storage (GCS)
+- Google Kubernetes Engine (GKE)
+- MySQL Database
+- Auto-generated Documentation
+---
 ### VPC
+#### Overview
+This Terraform module provisions a **custom Virtual Private Cloud (VPC)** in Google Cloud with multiple subnets and firewall rules to support secure and segmented networking for other infrastructure components like VM instances, GKE clusters, and more.
+
+#### Key Features
+1. **Custom VPC Creation**
+   - VPC name is configurable via `var.vpc_name`.
+   - `auto_create_subnetworks = false` ensures manual control over subnet creation.
+   - Regional routing mode for optimized traffic flow within the region.
+
+2. **Subnets**
+   - Multiple subnets are provisioned using a list of maps passed via `var.subnets`.
+   - Each subnet includes:
+     - Custom CIDR block
+     - Region-specific deployment
+
+3. **Firewall Rules**
+   - **Internal Access**: Allows ICMP, SSH (22), HTTP (80), and HTTPS (443) within the VPC
+   - **External Access**:
+     - SSH access from the internet for instances tagged with `ssh-access`.
+     - HTTP access for instances tagged with `web`.
+     - HTTPS access for instances tagged with `secure-web`.
+#### Security Considerations
+- Tag-based firewall rules ensure that only intended instances receive external traffic.
+- Ingress rules are tightly scoped to minimize exposure.
 
 ### VM
 
