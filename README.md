@@ -70,3 +70,10 @@ Key Characteristics:
 ### MySQL Database
 
 ### Documentation
+#### Overview
+This module generates a local documentation file summarizing the Terraform infrastructure that has been provisioned. It is designed to run **after all other modules** have completed successfully, ensuring that the documentation reflects the final state of the infrastructure.
+#### Key Features
+- **Local File Generation**: Uses the `local_file` resource to create a `.txt` file containing dynamically rendered content.
+- **Content Customization**: The documentation content is passed via the `doc_content` variable, allowing templated descriptions of resources like VPC, subnets, and project metadata.
+- **Output Location**: The file is saved at the root level of the project as `terraform_documentation.txt`.
+
