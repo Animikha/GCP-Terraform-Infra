@@ -18,7 +18,7 @@ Key Characteristics:
 2. Networking:
    - Integrated with an existing VPC and subnetwork specified by variables (`var.vpc_name, var.subnet_name`)
    - Uses IP aliasing (`ip_allocation_policy`) with dedicated secondary IP ranges for Pods and Services
-   - Access to the control plane is restricted by master authorized networks to only one CIDR block (`var.subnet-two_rang`e)
+   - Access to the control plane is restricted by master authorized networks to only one CIDR block (`var.subnet-two_range`)
 
 3. Security Features:
    - Shielded nodes enabled (`enable_shielded_nodes = true`)
