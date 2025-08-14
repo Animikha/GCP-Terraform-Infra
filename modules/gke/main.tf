@@ -22,7 +22,7 @@ resource "google_container_cluster" "gke" {
   master_authorized_networks_config {
     cidr_blocks {
       cidr_block   = var.subnet-two_range # Replace with actual IP ranges for security
-      display_name = "All networks"
+      display_name = "Only subnet-two"
     }
   }
 
