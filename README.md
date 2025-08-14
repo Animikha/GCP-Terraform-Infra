@@ -1,11 +1,81 @@
 ## Description
-
+This Terraform project provisions a comprehensive Google Cloud Platform (GCP) infrastructure. It includes modules for:
+- VPC
+- VM Instances
+- Google Cloud Storage (GCS)
+- Google Kubernetes Engine (GKE)
+- MySQL Database
+- Auto-generated Documentation
+---
 ### VPC
+#### Overview
+This Terraform module provisions a **custom Virtual Private Cloud (VPC)** in Google Cloud with multiple subnets and firewall rules to support secure and segmented networking for other infrastructure components like VM instances, GKE clusters, and more.
 
+#### Key Features
+1. **Custom VPC Creation**
+   - VPC name is configurable via `var.vpc_name`.
+   - `auto_create_subnetworks = false` ensures manual control over subnet creation.
+   - Regional routing mode for optimized traffic flow within the region.
+
+2. **Subnets**
+   - Multiple subnets are provisioned using a list of maps passed via `var.subnets`.
+   - Each subnet includes:
+     - Custom CIDR block
+     - Region-specific deployment
+
+3. **Firewall Rules**
+   - **Internal Access**: Allows ICMP, SSH (22), HTTP (80), and HTTPS (443) within the VPC
+   - **External Access**:
+     - SSH access from the internet for instances tagged with `ssh-access`.
+     - HTTP access for instances tagged with `web`.
+     - HTTPS access for instances tagged with `secure-web`.
+#### Security Considerations
+- Tag-based firewall rules ensure that only intended instances receive external traffic.
+- Ingress rules are tightly scoped to minimize exposure.
+---
 ### VM
+#### Overview
+This module provisions one or more **Google Compute Engine VM instances** using a dynamic configuration approach via the `for_each` construct. Each VM is uniquely defined by its name, machine type, zone, and other customizable parameters.
 
+#### Key Features
+1. **Dynamic Instance Creation**
+   - Uses `for_each` to create multiple VM instances based on the `var.vm_instances` map.
+   - Each instance is uniquely named using the map key.
+
+2. **Machine Configuration**
+   - Machine type and zone are configurable per instance.
+   - Boot disk parameters include:
+     - Source image (`var.source_image`)
+     - Disk size (`var.disk_size`)
+     - Disk type (`var.disk_type`)
+
+3. **Networking**
+   - Each VM is attached to a specified VPC and subnetwork.
+   - External IP is enabled via `access_config {}`.
+   - Network tags (`var.tags`) are used for firewall rule targeting.
+
+4. **Startup Script**
+   - VMs execute a startup script (`install-nginx.sh`) located in the module’s `scripts` directory.
+   - This allows automated provisioning of services like NGINX on boot.
+---
 ### GCS
+#### Overview
+This module provisions a **Google Cloud Storage (GCS) bucket** to serve as a backend or general-purpose storage resource for the infrastructure. It includes lifecycle management and versioning features for better data governance and cost control.
 
+#### Key Features
+1. **Bucket Configuration**
+   - Bucket name, location, and project are configurable via variables.
+   - Uniform bucket-level access is enabled for simplified IAM management.
+   - `force_destroy = true` allows the bucket to be deleted even if it contains objects.
+
+2. **Versioning**
+   - Object versioning is optionally enabled via `var.enable_versioning`.
+   - Helps retain historical versions of objects for recovery and auditing.
+
+3. **Lifecycle Rules**
+   - Automatically deletes objects older than 30 days to manage storage costs.
+   - Configurable via the `lifecycle_rule` block.
+---
 ### Google Kubernetes Engine (GKE) Cluster
 #### Overview
 This Terraform configuration provisions a private Google Kubernetes Engine (GKE) cluster in the asia-south1 region, designed with strong security and controlled network access.
@@ -37,5 +107,12 @@ Key Characteristics:
 
 
 ### MySQL Database
-
+---
 ### Documentation
+#### Overview
+This module generates a local documentation file summarizing the Terraform infrastructure that has been provisioned. It is designed to run **after all other modules** have completed successfully, ensuring that the documentation reflects the final state of the infrastructure.
+#### Key Features
+- **Local File Generation**: Uses the `local_file` resource to create a `.txt` file containing dynamically rendered content.
+- **Content Customization**: The documentation content is passed via the `doc_content` variable, allowing templated descriptions of resources like VPC, subnets, and project metadata.
+- **Output Location**: The file is saved at the root level of the project as `terraform_documentation.txt`.
+
