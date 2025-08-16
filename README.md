@@ -55,8 +55,10 @@ This module provisions one or more **Google Compute Engine VM instances** using 
    - Network tags (`var.tags`) are used for firewall rule targeting.
 
 4. **Startup Script**
-   - VMs execute a startup script (`install-nginx.sh`) located in the module’s `scripts` directory.
-   - This allows automated provisioning of services like NGINX on boot.
+   - Each VM is provisioned with a **startup script** that ensures the MySQL client is installed
+   - On SSH login, the terminal session automatically launches the **MySQL database console** connected to the Cloud SQL instance
+   - This allows immediate interaction with the database without requiring manual commands 
+
 ---
 ### GCS
 #### Overview
