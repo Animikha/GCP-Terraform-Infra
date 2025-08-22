@@ -1,4 +1,4 @@
-output "gcs_bucket_name" {
+/*output "gcs_bucket_name" {
   description = "Name of the GCS bucket"
   value       = module.gcs_backend.bucket_name
 }
@@ -16,7 +16,7 @@ output "gcs_bucket_location" {
 output "gcs_bucket_self_link" {
   description = "Self link of the GCS bucket"
   value       = module.gcs_backend.bucket_self_link
-}
+}*/
 
 output "vpc_id" {
   description = "ID of the VPC"

@@ -46,6 +46,8 @@ module "mysql_db" {
   psc_ip_range_name                 = var.psc_ip_range_name
   psc_ip_range_prefix_length        = var.psc_ip_range_prefix_length
 
+  depends_on = [ module.vpc ]
+
 }
 
 module "documentation" {
@@ -67,14 +69,14 @@ EOT
   depends_on = [module.vpc]
 }
 
-module "gcs_backend" {
+/*module "gcs_backend" {
   source            = "./modules/gcs_backend"
   bucket_name       = var.bucket_name
   bucket_location   = var.bucket_location
   project_id        = var.project_id
   enable_versioning = var.enable_versioning
   depends_on        = [module.documentation]
-}
+}*/
 
 module "vm_instance" {
   source       = "./modules/vm"
@@ -89,7 +91,12 @@ module "vm_instance" {
   subnetwork   = var.subnetwork
   tags         = var.tags
 
-  depends_on = [module.gcs_backend, module.mysql_db]
+  db_host = module.mysql_db.mysql_private_ip
+  db_user = var.db_user
+  db_password = var.db_password
+
+
+  depends_on = [ module.mysql_db] // and module.gcs_backend,
 
 }
 
