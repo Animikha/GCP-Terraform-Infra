@@ -30,3 +30,20 @@ variable "vm_instances" {
     machine_type = string
   }))
 }
+
+variable "db_host" {
+  description= "Ip address of mysql_db"
+  type = string
+
+}
+
+variable "db_user" {
+  description = "MySQL user"
+  type        = string
+}
+
+variable "db_password" {
+  description = "MySQL password"
+  type        = string
+  sensitive   = true
+}
