@@ -67,14 +67,14 @@ EOT
   depends_on = [module.vpc]
 }
 
-module "gcs_backend" {
-  source            = "./modules/gcs_backend"
-  bucket_name       = var.bucket_name
-  bucket_location   = var.bucket_location
-  project_id        = var.project_id
-  enable_versioning = var.enable_versioning
-  depends_on        = [module.documentation]
-}
+# module "gcs_backend" {
+#   source            = "./modules/gcs_backend"
+#   bucket_name       = var.bucket_name
+#   bucket_location   = var.bucket_location
+#   project_id        = var.project_id
+#   enable_versioning = var.enable_versioning
+#   depends_on        = [module.documentation]
+# }
 
 module "vm_instance" {
   source       = "./modules/vm"
@@ -89,7 +89,7 @@ module "vm_instance" {
   subnetwork   = var.subnetwork
   tags         = var.tags
 
-  depends_on = [module.gcs_backend, module.mysql_db]
+  depends_on = [ module.mysql_db]
 
 }
 
