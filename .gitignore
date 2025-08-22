@@ -43,5 +43,6 @@ terraform-sa-key.json
 # Ignore lock files
 .terraform.lock.hcl
 
+# Do not include the terraform.tfvars file
 terraform.tfvars
 
