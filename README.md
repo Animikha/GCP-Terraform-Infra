@@ -55,8 +55,10 @@ This module provisions one or more **Google Compute Engine VM instances** using 
    - Network tags (`var.tags`) are used for firewall rule targeting.
 
 4. **Startup Script**
-   - VMs execute a startup script (`install-nginx.sh`) located in the module’s `scripts` directory.
-   - This allows automated provisioning of services like NGINX on boot.
+   - Each VM is provisioned with a **startup script** that ensures the MySQL client is installed
+   - On SSH login, the terminal session automatically launches the **MySQL database console** connected to the Cloud SQL instance
+   - This allows immediate interaction with the database without requiring manual commands 
+
 ---
 ### GCS
 #### Overview
@@ -106,8 +108,47 @@ This Terraform configuration provisions a private Google Kubernetes Engine (GKE)
    - Release channel: REGULAR (automatic version updates with regular cadence)
    - Deletion protection disabled (`deletion_protection = false`) for easy teardown in dev/test environments.
 
+---
+## Cloud SQL (MySQL)
 
-### MySQL Database
+### Overview  
+This Terraform configuration provisions a **Google Cloud SQL MySQL instance** that is accessible only through a **Private Service Connection (PSC)** within a custom VPC network.  
+It ensures that the database is private, secure, and integrated with controlled VPC access.  
+
+### Key Characteristics  
+
+**1. Networking** 
+- Creates a **reserved internal IP range** (`google_compute_global_address`) dedicated for PSC.  
+- Establishes a **private VPC service networking connection** (`google_service_networking_connection`) between the custom VPC and Google-managed services.  
+- Cloud SQL is provisioned with **private IP only** (`ipv4_enabled = false`).  
+- Database access is restricted to workloads inside the same VPC.  
+
+
+**2. Cloud SQL Instance**  
+- **Engine**: MySQL (version defined via `var.db_version`).  
+- **Region**: Configurable (`var.region`).  
+- **Tier**: Machine type defined via `var.db_tier`.  
+- **Edition**: Configurable (`var.sql_edition`).  
+- **Availability**: High availability or single-zone, controlled by `var.db_availability_type`.  
+- **Disk**: Standard or SSD, with autoscaling enabled.  
+- **Backups**: Daily backups, binary logging, and transaction log retention configured.  
+- **Maintenance**: Controlled by `var.db_maintenance_day` and `var.db_maintenance_hour`.  
+
+ **3. Security Features**  
+- No public IPs assigned (private only).  
+- Database access restricted to internal VPC traffic.  
+- **Deletion protection** can be enabled/disabled via variable (`var.db_deletion_protection_enabled`).  
+- Automated backups and logs improve recovery and auditability.  
+
+**4. Database & User Configuration**  
+- **Database user** created with username (`var.db_user`) and password (`var.db_password`).  
+- **Default database** created (`var.db_name`).  
+
+**5. Operational Settings**  
+- **Deletion protection disabled by default** for easy teardown in dev/test environments.  
+- **Disk autoscaling enabled** to avoid manual resizing.  
+- Configuration is modular with variables for flexibility across environments.  
+
 ---
 ### Documentation
 #### Overview
